@@ -271,3 +271,5 @@ ggplot() +
 
 # DSM = first return. treetops. bumpy
 # DTM = final return. bare earth. smooth
+
+# that's the opening cartoon in episode 3
