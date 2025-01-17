@@ -43,7 +43,7 @@ ggplot() +
   coord_quickmap()
 
 # DSM is speckly. And goes higher. It's the tree tops. 
-
+# this is where we left off in ep 3
 
 # Canopy Height Models (CHMs)
 # Raster subtraction method
@@ -51,6 +51,8 @@ ggplot() +
 CHM_HARV <- DSM_HARV - DTM_HARV
 
 summary(CHM_HARV)
+values(CHM_HARV) %>% summary()
+
 str(CHM_HARV)
 
 CHM_HARV_df <- as.data.frame(CHM_HARV, xy = TRUE)
@@ -63,6 +65,7 @@ ggplot() +
   coord_quickmap()
 
 # remember episode 1? Let's look at a histogram of our CHM:
+# to see the range of values
 ggplot(CHM_HARV_df) +
   geom_histogram(aes(HARV_dsmCrop))
 
@@ -84,7 +87,7 @@ ggplot(CHM_HARV_df) +
 # 1. What is the min and maximum value for the Harvard Forest Canopy Height Model 
 #    (CHM_HARV) that we just created?
 
-summary(CHM_HARV)
+summary(values(CHM_HARV))
 
 
 
@@ -109,7 +112,7 @@ minmax(CHM_HARV)
 
 
 
-# hint: plot the histogram
+# hint: distrobution = histogram
 
 
 
