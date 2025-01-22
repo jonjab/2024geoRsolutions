@@ -231,6 +231,20 @@ ggplot() +
   coord_quickmap()
 
 
+# are they the same?
+
+CHM_ov_HARV
+CHM_HARV
+
+# they seem to be the same.
+CHM_ov_HARV == CHM_HARV
+
+# the dataframes are different because we've been mutating
+CHM_ov_HARV_df
+CHM_HARV_df
+
+
+
 
 # Saving our work
 # exporting a geotiff for later analysis, viz, etc.
