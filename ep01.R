@@ -1,9 +1,32 @@
+# ep 1 of vector / raster geospatial R
+
 library(terra)
 library(ggplot2)
 library(dplyr)
 
 rm(list=ls())
 
+describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+DSM_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+
+DSM_HARV
+
+summary(DSM_HARV)
+summary(values(DSM_HARV))
+values(DSM_HARV) %>% summary()
+
+DSM_HARV_df <- as.data.frame(DSM_HARV, xy=TRUE)
+str(DSM_HARV_df)        
+        
+ggplot() +
+  geom_raster(data= DSM_HARV_df, 
+              aes(x=x, y=y, fill = HARV_dsmCrop)) +
+  scale_fill_viridis_c() +
+  coord_quickmap()
+        
+plot(DSM_HARV)
+        
+crs(DSM_HARV, proj=TRUE)
 
 
 # gotcha in the challenge:
@@ -17,7 +40,8 @@ rm(list=ls())
 
 
 
-# data demonstration code - not being taught
+# data demonstration code - not teach and type
+# can skip for time
 # Use stack function to read in all bands
 # down to line 83
 RGB_stack <-
@@ -103,6 +127,33 @@ rm(DSM_highvals)
 
 
 # back to the lesson type-and-talk code:
+
+
+
+ggplot() +
+  geom_histogram(data = DSM_HARV_df, aes(HARV_dsmCrop))
+
+
+
+# make a histogram with the SJER DSM file.   
+SJER_DSM <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
+
+SJER_DSM_df <- as.data.frame(SJER_DSM, xy=TRUE)
+str(SJER_DSM_df)
+ggplot() +
+  geom_histogram(data = SJER_DSM_df, aes(SJER_dsmCrop))
+
+
+
+#  1. Does this file have the same CRS as DSM_HARV?
+#  2. What is the NoDataValue?
+#  3. What is resolution of the raster data?
+#  4. How large would a 5x5 pixel area be on the Earth’s surface?
+#  5. Is the file a multi- or single-band raster?
+
+
+
+
 
 
 
