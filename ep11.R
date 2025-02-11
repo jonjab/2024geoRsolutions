@@ -91,4 +91,21 @@ ggplot() +
   coord_sf()
 
 
-# buffers with extract()
+# Extract Data using x,y Locations
+# make a buffer around a point
+
+# point from episode 6:
+point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
+
+# average tree height near our tower
+mean_tree_height_tower <- extract(x = CHM_HARV,
+                                  y = st_buffer(point_HARV, dist = 20),
+                                  fun = mean)
+
+mean_tree_height_tower
+
+# challenge:
+# do it for all the plot location points.
+# is this the first time we use this data?
+# points were created in ep. 10 OR can be found:
+plot_locations_sp_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp")
