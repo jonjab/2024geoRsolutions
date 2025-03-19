@@ -7,15 +7,39 @@ library(sf)
 library(terra)
 library(ggplot2)
 
+# Read US Boundary File
 state_boundary_US <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-State-Boundaries-Census-2014.shp") %>%
   st_zm()
 
+ggplot() +
+  geom_sf(data = state_boundary_US) +
+  ggtitle("Map of Contiguous State Boundaries") +
+  coord_sf()
+
+# Read US Boundary Layer
+# to 'punch out' an outline
+country_boundary_US <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-Boundary-Dissolved-States.shp") %>%
+  st_zm()
+
+ggplot() +
+  geom_sf(data = state_boundary_US, color = "gray60") +
+  geom_sf(data = country_boundary_US, color = "black",alpha = 0.25,size = 5) +
+  ggtitle("Map of Contiguous US State Boundaries") +
+  coord_sf()
+
+
+point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
+st_crs(point_HARV)$proj4string
+
+
+
+### my names  - - - - - - - - 
 mass <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/Boundary-US-State-Mass.shp")
-# new_england <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/Boundary-US-State-NEast.shp")
+new_england <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/Boundary-US-State-NEast.shp")
 us_outline <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-Boundary-Dissolved-States.shp")
 tower <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
 
-sjer <- st_read("data/")
+# sjer <- st_read("data/")
 
 
 
@@ -36,13 +60,13 @@ str(HARV_CHM_df)
 
 lines_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
 
-
 ggplot() +
   geom_sf(data = us_outline, fill = "gray", color="black") +
   geom_sf(data = mass, color="black") +
   geom_sf(data=tower, color="black") +
   geom_raster(data = HARV_CHM_df, aes(x=x, y=y, fill = HARV_chmCrop)) +
-  coord_sf()
+  ggtitle("Bad overlay") +
+    coord_sf()
 
 crs(us_outline) == crs(HARV_CHM)
 

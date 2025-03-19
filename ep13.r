@@ -8,6 +8,34 @@ library(RColorBrewer)
 
 #install.packages("RColorBrewer") if necessary 
 
+
+
+# episode 13 starts
+library(RColorBrewer)
+ggplot() +
+  geom_raster(data=NDVI_HARV_stack_df, aes(x=x, y=y, fill=value)) +
+  facet_wrap(~variable)+
+  ggtitle("Landsat NDVIs")+
+  theme_void()
+
+brewer.pal(9, "YlGn")
+green_colors <- brewer.pal(9, "YlGn") %>% 
+  colorRampPalette()
+
+
+ggplot() +
+  geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
+  facet_wrap(~variable) +
+  ggtitle("Landsat NDVI", subtitle = "NEON Harvard Forest") + 
+  theme_void() + 
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"), 
+        plot.subtitle = element_text(hjust = 0.5)) + 
+  scale_fill_gradientn(name = "NDVI", colours = green_colors(20))
+
+
+
+
+
 #first remove the obnoxious x and y axis lables since its messy
 ggplot() +
   geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
