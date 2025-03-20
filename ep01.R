@@ -168,8 +168,5 @@ ggplot() +
 #  4. How large would a 5x5 pixel area be on the Earth’s surface?
 #  5. Is the file a multi- or single-band raster?
 
-# we end as we begin:
 describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
-
-
 

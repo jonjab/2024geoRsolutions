@@ -73,8 +73,10 @@ plotRGB(RGB_stack_HARV,
         scale = 800, 
         stretch = "hist")
 
+summary(RGB_stack_HARV)
+
 # I have no idea what 'scale' is doing here
-# we already know it goes 0 - 255.
+# # we already know it goes 0 - 255.
 
 
 plotRGB(RGB_stack_HARV, 
