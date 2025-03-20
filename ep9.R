@@ -106,8 +106,8 @@ ggplot() +
 str(NE.States.Boundary.US)
 str(NE.States.Boundary.US$STUSPS)
 NE.States.Boundary.US$STUSPS
-# filter(NE.States.Boundary.US, STUSPS == "MA")
-# plot(mass)
+filter(NE.States.Boundary.US, STUSPS == "MA")
+
 
 # this also doesn't work. even tho it's exactly as from episode 7
 lines_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
