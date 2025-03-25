@@ -6,6 +6,7 @@ rm(list=ls())
 library(sf)
 library(terra)
 library(ggplot2)
+library(dplyr)
 
 # Read US Boundary File
 state_boundary_US <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-State-Boundaries-Census-2014.shp") %>%
@@ -102,30 +103,84 @@ ggplot() +
   theme(legend.background = element_rect(color = NA)) +
   coord_sf()
 
-# why can't I map just Mass.?
+# can I map just Mass.?
 str(NE.States.Boundary.US)
 str(NE.States.Boundary.US$STUSPS)
 NE.States.Boundary.US$STUSPS
-filter(NE.States.Boundary.US, STUSPS == "MA")
+mass <- filter(NE.States.Boundary.US, STUSPS == "MA")
 
-
-# this also doesn't work. even tho it's exactly as from episode 7
-lines_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
-unique(lines_HARV$TYPE)
-footpath_HARV <- lines_HARV %>%
-  filter(TYPE == "footpath")
 
 
 ggplot() +
-  geom_sf(data = NE.States.Boundary.US, aes(color ="black"),
+  geom_sf(data = mass, aes(color ="black"),
           show.legend = "line") +
   geom_sf(data = point_HARV, aes(shape = "shape"), color = "purple") +
   scale_shape_manual(name = "", labels = "Fisher Tower",
                      values = c("shape" = 19)) +
-  ggtitle("GARG!!") +
+  ggtitle("Just the Mass-holes") +
   theme(legend.background = element_rect(color = NA)) +
   coord_sf()
 
+# now can we see the CHM?
+ggplot() +
+  geom_raster(data = HARV_CHM_df, aes(x=x, y=y, fill = HARV_chmCrop)) +
+  theme(legend.background = element_rect(color = NA)) +
+  coord_sf()
+
+# i still can't see if it's working
+ggplot() +
+  geom_raster(data = HARV_CHM_df, aes(x=x, y=y, fill = HARV_chmCrop)) +
+  geom_sf(data = mass, aes(color ="black"),
+          show.legend = "line") +
+  geom_sf(data = point_HARV, aes(shape = "shape"), color = "purple") +
+  scale_shape_manual(name = "", labels = "Fisher Tower",
+                     values = c("shape" = 19)) +
+  ggtitle("Fisher Tower location") +
+  theme(legend.background = element_rect(color = NA)) +
+  coord_sf()
+
+# try the landsat?
+# column name should not start with a number
+# does the lesson ever point this out?
+
+HARV_Landsat <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/245_HARV_landRGB.tif")
+str(HARV_Landsat)
+nlyr(HARV_Landsat)
+plotRGB(HARV_Landsat)
+HARV_Landsat_df <- as.data.frame(HARV_Landsat, xy=TRUE)
+str(HARV_Landsat_df)
+new_names <- c("x", "y", "r", "g", "b")
+names(HARV_Landsat_df) <- new_names
+str(HARV_Landsat_df)
+
+
+plotRGB(HARV_Landsat, 
+        r = 1, g = 2, b = 3,
+        stretch = "lin")
+
+ggplot() +
+  geom_raster(data = HARV_Landsat_df,
+              aes(x = x, y = y, alpha = r)) + 
+  coord_equal()
+
+ggplot() +
+  geom_raster(HARV_Landsat_df, aes(x=x, y=y, fill = g)) +
+  coord_sf()
+
+
+
+
+
+
+
+geom_sf(data = mass, aes(color ="black"),
+        show.legend = "line") +
+  geom_sf(data = point_HARV, aes(shape = "shape"), color = "purple") +
+  scale_shape_manual(name = "", labels = "Fisher Tower",
+                     values = c("shape" = 19)) +
+  ggtitle("Fisher Tower location") +
+  theme(legend.background = element_rect(color = NA)) +
+  
 
 
 ### my names  - - - - - - - - 
