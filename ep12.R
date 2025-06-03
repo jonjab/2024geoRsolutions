@@ -99,7 +99,7 @@ ggplot() +
 #plot RGB images for Julian Days 277 and 293
 #compare with Julian Days 133 and 197
 
-RGB_277 <- rast("data/NEON-DS-Landsat-NDVI/NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif")
+RGB_277 <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif")
 
 # NOTE: Fix the bands' names so they don't start with a number!
 names(RGB_277) <- paste0("X", names(RGB_277))
@@ -121,6 +121,7 @@ ggplot() +
 
 
 # Julian day 293
+# clouds will mess up any NDVI. No vegetation!
 RGB_293 <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/293_HARV_landRGB.tif")
 names(RGB_293) <- paste0("X", names(RGB_293))
 RGB_293 <- RGB_293/255
@@ -131,3 +132,4 @@ RGB_293_df$rgb <-
 ggplot() +
   geom_raster(data = RGB_293_df, aes(x, y), fill = RGB_293_df$rgb) +
   ggtitle("Julian day 293")
+

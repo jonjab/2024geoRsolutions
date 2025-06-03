@@ -5,6 +5,8 @@
 # plotting pixel summary values using ggplot() 
 # comparing NDVI values between two different sites 
 
+current_episode <- 12
+
 
 avg_NDVI_HARV <- global(NDVI_HARV_stack, mean)
 avg_NDVI_HARV

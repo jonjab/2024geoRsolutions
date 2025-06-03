@@ -3,6 +3,8 @@
 
 # customizing raster plots using ggplot2 package
 
+current_episode <- 13
+
 library(ggplot2)
 library(RColorBrewer)
 
