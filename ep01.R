@@ -5,6 +5,7 @@ library(ggplot2)
 library(dplyr)
 
 rm(list=ls())
+current_episode <- 1
 
 describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 DSM_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
@@ -103,22 +104,19 @@ ggplot() +
   ggtitle("Orthographic Imagery", subtitle = "Blue band, with NA highlighted") +
   coord_quickmap()
 
-# memory saving
+# rTip: memory saving
 rm(RGB_2m, RGB_stack, RGB_2m_df_nd, RGB_2m_df, RGB_2m_nas)
 
 
 
-
-
-
-
-
+# this seems like an aside.
+# and it doesn't run
 ggplot() +
   geom_raster(data = DSM_HARV_df, aes(x = x, y = y, fill = HARV_dsmCrop)) +
   scale_fill_viridis_c() +
   # use reclassified raster data as an annotation
-  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, 
-           fill = scales::colour_ramp('deeppink')(DSM_highvals$HARV_dsmCrop)) +
+#  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, 
+#           fill = scales::colour_ramp('deeppink')(DSM_highvals$HARV_dsmCrop)) +
   ggtitle("Elevation Data", subtitle = "Highlighting values > 400m") +
   coord_quickmap()
 
