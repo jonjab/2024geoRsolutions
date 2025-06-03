@@ -5,15 +5,20 @@
 #import, explore, and plot NDVI data derived for several dates through the year
 #view RGB imagery used to derive NDVI time series 
 
+current_episode <- 12
+
 library(terra)
 library(ggplot2)
 library(tidyr)
 library(scales)
 library(dplyr)
 
+
+
 #install.packages("tidyr","scales") if not installed 
 
 NDVI_HARV_path <- "data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI"
+NDVI_HARV_path
 
 all_NDVI_HARV <- list.files(NDVI_HARV_path,
                             full.names = TRUE,
@@ -94,7 +99,7 @@ ggplot() +
 #plot RGB images for Julian Days 277 and 293
 #compare with Julian Days 133 and 197
 
-RGB_277 <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif")
+RGB_277 <- rast("data/NEON-DS-Landsat-NDVI/NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif")
 
 # NOTE: Fix the bands' names so they don't start with a number!
 names(RGB_277) <- paste0("X", names(RGB_277))

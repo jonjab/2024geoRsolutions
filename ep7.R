@@ -1,5 +1,6 @@
 # episode 7
 rm(list=ls())
+current_episode <- 7
 
 library(terra)
 library(dplyr)

@@ -5,6 +5,8 @@ library(ggplot2)
 library(dplyr)
 
 rm(list=ls())
+current_episode <- 3
+
 DSM_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 DSM_HARV_df <- as.data.frame(DSM_HARV, xy=TRUE)
 

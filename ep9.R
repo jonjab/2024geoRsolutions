@@ -2,6 +2,7 @@
 # dealing with CRSs
 
 rm(list=ls())
+current_episode <- 9
 
 library(sf)
 library(terra)

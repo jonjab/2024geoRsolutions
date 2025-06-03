@@ -5,6 +5,7 @@ library(ggplot2)
 library(dplyr)
 
 rm(list=ls())
+current_episode <- 1
 
 DSM_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 DSM_HARV_df <- as.data.frame(DSM_HARV, xy=TRUE)
@@ -24,10 +25,11 @@ custom_bins <- c(300, 350, 400, 450)
 DSM_HARV_df <- DSM_HARV_df %>% 
   mutate(fct_elevation2 = cut(HARV_dsmCrop, breaks=custom_bins))
 
+str(DSM_HARV_df)
 ggplot() +
-  geom_raster(data=DSM_HARV_df, aes(x=x, y=y, fill = fct_elevation2)) +
+  geom_raster(data=DSM_HARV_df, aes(x=x, y=y, fill = HARV_dsmCrop)) +
   coord_quickmap() +
-  scale_fill_continuous(values = terrain.colors(3))
+  scale_fill_continuous()
 
 
 ggplot() +

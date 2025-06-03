@@ -1,7 +1,9 @@
-# episode 9
+# episode 11
 # dealing with CRSs
 
 rm(list=ls())
+current_episode <- 11
+
 
 library(sf)
 library(terra)

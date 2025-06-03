@@ -2,6 +2,7 @@
 # raster math
 
 rm(list=ls())
+current_episode <- 4
 
 library(terra)
 library(ggplot2)

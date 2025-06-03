@@ -2,6 +2,7 @@
 # color
 
 rm(list=ls())
+current_episode <- 5
 
 library(terra)
 library(ggplot2)

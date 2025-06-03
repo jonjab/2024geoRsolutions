@@ -2,6 +2,7 @@
 # vectors
 
 rm(list=ls())
+current_episode <- 6
 
 library(sf)
 library(terra)
@@ -32,8 +33,8 @@ st_geometry(point_HARV)
 st_geometry(roads_HARV)
 
 # ep 7 starts here.
-ncol(lines_HARV)
-colnames(lines_HARV)
+ncol(roads_HARV)
+colnames(roads_HARV)
 
 
 # challenge #########

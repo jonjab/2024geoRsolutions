@@ -2,6 +2,7 @@
 
 
 rm(list=ls())
+current_episode <- 8
 
 library(sf)
 library(terra)
