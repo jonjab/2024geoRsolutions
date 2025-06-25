@@ -88,16 +88,16 @@ ggplot() +
 ggplot() +
   geom_raster(data = CHM_plots_HARVcrop_df,
               aes(x = x, y = y, fill = HARV_chmCrop)) +
-  geom_sf(data = CHM_HARV_Cropped_2_Plots, color = "blue", fill = NA) +
-  scale_fill_gradientn(name = "Canopy Height") +
+  geom_sf(data = plot_locations_sp_HARV, color = "blue", fill = NA) +
+  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
   coord_sf()
 
 
 ggplot() +
-  geom_raster(data = CHM_HARV_Cropped_2_Plots_df,
+  geom_raster(data = CHM_plots_HARVcrop_df,
               aes(x = x, y = y, fill = HARV_chmCrop)) +
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
-  geom_sf(data = PlotLocations, color = "blue", fill = NA) +
+  geom_sf(data = plot_locations_sp_HARV, color = "blue", fill = NA) +
   coord_sf()
 
 # 1 lonely dot lives outside the extent. 
@@ -111,7 +111,7 @@ ggplot() +
   geom_raster(data = CHM_HARV_manual_crop_df,
               aes(x = x, y = y, fill = HARV_chmCrop)) +
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
-  geom_sf(data = PlotLocations, color = "blue", fill = NA) +
+  geom_sf(data = plot_locations_sp_HARV, color = "blue", fill = NA) +
   coord_sf()
 
 ggplot() +
