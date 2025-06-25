@@ -32,10 +32,11 @@ crs(DSM_HARV, proj=TRUE)
 
 # gotcha in the challenge:
 # the pixel size is in meters. The crs doesn't say anything
-# about the units of the pixels themselves. This map could be
+# about the units of the pixel values. This map could be
 # 300 - 400 Smoots.
 
-
+# more about the data is here:
+# https://data.neonscience.org/data-products/DP3.30024.001
 
 
 
@@ -115,8 +116,8 @@ ggplot() +
   geom_raster(data = DSM_HARV_df, aes(x = x, y = y, fill = HARV_dsmCrop)) +
   scale_fill_viridis_c() +
   # use reclassified raster data as an annotation
-#  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, 
-#           fill = scales::colour_ramp('deeppink')(DSM_highvals$HARV_dsmCrop)) +
+  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, 
+           fill = scales::colour_ramp('deeppink')(DSM_highvals$HARV_dsmCrop)) +
   ggtitle("Elevation Data", subtitle = "Highlighting values > 400m") +
   coord_quickmap()
 
@@ -126,14 +127,13 @@ rm(DSM_highvals)
 
 # back to the lesson type-and-talk code:
 
-
-
 ggplot() +
   geom_histogram(data = DSM_HARV_df, aes(HARV_dsmCrop))
 
 
 
-# make a histogram with the SJER DSM file.   
+# make a histogram with the SJER DSM file. 
+# why do we care? Do we ever do anything with these histograms?
 SJER_DSM <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
 
 SJER_DSM_df <- as.data.frame(SJER_DSM, xy=TRUE)
