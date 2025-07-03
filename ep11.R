@@ -130,12 +130,15 @@ point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp"
 
 # average tree height near our tower
 str(point_HARV)
-mean_tree_height_tower <- extract(x = CHM_HARV,
-                                  y = point_HARV,
-                                  raw=FALSE)
 
-  
-  mean_tree_height_tower <- extract(x = CHM_HARV,
+# The code commented below raises an error as it confuses the extract()
+# function from tidyr with the one from terra. Hence, we need to use terra:extract()
+# But this is a good teaching moment
+# mean_tree_height_tower <- extract(x = CHM_HARV,
+#                                   y = st_buffer(point_HARV, dist = 20),
+#                                   fun = mean)
+
+mean_tree_height_tower <- terra::extract(x = CHM_HARV,
                                   y = st_buffer(point_HARV, dist = 20),
                                   fun = mean)
 str(mean_tree_height_tower)

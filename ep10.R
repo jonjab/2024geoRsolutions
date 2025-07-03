@@ -104,4 +104,6 @@ ggplot() +
 
 ## Export to an ESRI shapefile
 st_write(plot_locations_sp_HARV,
-         "data/PlotLocations_HARV.shp")
+         "data/PlotLocations_HARV.shp", append = FALSE)
+# I had to add the append = FALSE argument as I already had the file and needed to replace it
+
