@@ -29,9 +29,12 @@ ggplot() +
   ggtitle("Map of Contiguous US State Boundaries") +
   coord_sf()
 
-
+# Read point vector with one data point on our study area
 point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
-st_crs(point_HARV)$proj4string
+
+# Don't do what the lessons says, but use the approach of ep1 to get crs
+crs(point_HARV, proj = TRUE)
+crs(state_boundary_US, proj = TRUE)
 
 # CRS Units - View Object Extent
 st_bbox(point_HARV)
@@ -165,7 +168,7 @@ ggplot() +
   coord_equal()
 
 ggplot() +
-  geom_raster(HARV_Landsat_df, aes(x=x, y=y, fill = g)) +
+  geom_raster(data = HARV_Landsat_df, aes(x=x, y=y, fill = g)) +
   coord_sf()
 
 
@@ -173,14 +176,14 @@ ggplot() +
 
 
 
-
+ggplot() +
 geom_sf(data = mass, aes(color ="black"),
         show.legend = "line") +
   geom_sf(data = point_HARV, aes(shape = "shape"), color = "purple") +
   scale_shape_manual(name = "", labels = "Fisher Tower",
                      values = c("shape" = 19)) +
   ggtitle("Fisher Tower location") +
-  theme(legend.background = element_rect(color = NA)) +
+  theme(legend.background = element_rect(color = NA))
   
 
 
@@ -208,6 +211,7 @@ ggplot() +
 
 
 # this is too silly
+lines_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
 ggplot() +
   geom_sf(data = us_outline, fill = "gray", color="black") +
   geom_sf(data = mass, color="black") +
