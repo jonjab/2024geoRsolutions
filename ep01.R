@@ -159,12 +159,59 @@ ggplot() +
 ##### The final challenge:
 # Use describe() to determine the following 
 # about the NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif file:
-  
+# note what Co-Pilot suggests
+
 #  1. Does this file have the same CRS as DSM_HARV?
 #  2. What is the NoDataValue?
 #  3. What is resolution of the raster data?
 #  4. How large would a 5x5 pixel area be on the Earth’s surface?
 #  5. Is the file a multi- or single-band raster?
 
+
 describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
 
+
+
+
+
+#  1. Does this file have the same CRS as DSM_HARV?
+#     we can be fancy and do this with code:
+crs(DSM_HARV) == crs(rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif"))
+
+#Yes.
+
+#  2. What is the NoDataValue?
+
+
+
+
+
+
+# -9999
+# (co-pilot was wrong!!)
+
+#  3. What is resolution of the raster data?
+
+
+
+
+# it's on line 45. or:
+res(rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif"))
+
+#  4. How large would a 5x5 pixel area be on the Earth’s surface?
+
+
+
+
+# 5 x 5 meters
+
+
+
+#  5. Is the file a multi- or single-band raster?
+
+
+
+# single band
+# line 57, and beyond, only has one.
+# or:
+nlyr(rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif"))
