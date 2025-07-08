@@ -1,15 +1,20 @@
 # ep 2 of vector / raster geospatial R
 
+# these 2 lines are for good hygiene
+rm(list=ls())
+current_episode <- 1
+
+# setting up our libraries and object 
+# from scratch is a very good idea.
+
 library(terra)
 library(ggplot2)
 library(dplyr)
 
-rm(list=ls())
-current_episode <- 1
-
 DSM_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 DSM_HARV_df <- as.data.frame(DSM_HARV, xy=TRUE)
 
+summary(DSM_HARV)
 summary(DSM_HARV_df)
 
 DSM_HARV_df <- DSM_HARV_df %>% 
