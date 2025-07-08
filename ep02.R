@@ -44,7 +44,9 @@ ggplot() +
 
 DSM_hill_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
 DSM_hill_HARV_df <- as.data.frame(DSM_hill_HARV, xy=TRUE)
-str(DSM_hill_HARV_df)
+str("data/")
+
+describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
 
 ggplot() +
   geom_raster(data = DSM_hill_HARV_df , aes(x = x, y = y, fill = HARV_DSMhill)) + 
