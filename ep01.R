@@ -144,11 +144,17 @@ ggplot() +
 
 
 #  1. Does this file have the same CRS as DSM_HARV?
+crs(DSM_HARV) == crs(SJER_DSM)
+crs(DSM_HARV)
+crs(SJER_DSM)
+
 #  2. What is the NoDataValue?
+describe(SJER_DSM)
+
 #  3. What is resolution of the raster data?
 #  4. How large would a 5x5 pixel area be on the Earth’s surface?
 #  5. Is the file a multi- or single-band raster?
-
+nlyr(SJER_DSM)
 
 
 
