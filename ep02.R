@@ -163,16 +163,21 @@ ggplot() +
 
 DSM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
 DSM_SJER_df <- as.data.frame(DSM_SJER, xy=TRUE)
+
 DSM_SJER_df <- DSM_SJER_df %>% 
   mutate(fct_elevation = cut(SJER_dsmCrop, breaks=3))
+
 DSM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill.tif")
 DSM_hill_SJER_df <- as.data.frame(DSM_hill_SJER, xy=TRUE)
+str(DSM_hill_SJER_df)
+
+# this didn't work.
 ggplot() +
   geom_raster(data = DSM_SJER_df , aes(x = x, y = y, fill = fct_elevation)) + 
   scale_fill_manual(values = terrain.colors(3), name = "Elevation") +
   theme(axis.title.y = element_blank()) + 
   theme(axis.title.x = element_blank()) + 
   ggtitle("San Joaquin Experimental Range DSM") +
-  geom_raster(data = DSM_hill_SJER_df , aes(x = x, y = y, alpha = SJER_DSMhill)) + 
+  geom_raster(data = DSM_hill_SJER_df , aes(x = x, y = y, alpha = SJER_dsmHill)) + 
   coord_quickmap() +
   scale_alpha(range = c(0.15, 0.65), guide = "none")

@@ -5,6 +5,8 @@ library(ggplot2)
 library(dplyr)
 
 rm(list=ls())
+
+
 current_episode <- 3
 
 DSM_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
@@ -60,6 +62,7 @@ DTM_hill_utm18n <- DTM_hill_HARV %>%
 
 crs(DTM_HARV) == crs(DTM_hill_utm18n)
 
+# now we need to turn that into a dataframe again
 DTM_hill_utm18n_df <- as.data.frame(DTM_hill_utm18n, xy=TRUE)
 
 ggplot() +
@@ -79,7 +82,36 @@ res(DTM_HARV)
 res(DTM_hill_utm18n)
 res(DTM_hill_HARV)
 
+
+
 # you could add resolution changes 
 DTM_hill_utm18n <- DTM_hill_HARV %>% 
-  project(crs(DTM_HARV))
+  project(crs(DTM_HARV), res=res(DTM_HARV))
 
+# there's not an example spelled out where overlaying these 
+# doesn't work before the resolution change
+
+res(DTM_HARV)
+res(DTM_hill_utm18n)
+
+
+
+# challenge: San Joaquin DSM
+DSM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
+DSM_SJER_df <- as.data.frame(DSM_SJER, xy=TRUE)
+DSM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill.tif")
+DSM_hill_SJER_df <- as.data.frame(DSM_hill_SJER, xy=TRUE)
+
+crs(DSM_SJER) == crs(DSM_hill_SJER)
+str(DSM_SJER_df)
+str(DSM_hill_SJER_df)
+
+ggplot() +
+  geom_raster(data = DSM_SJER_df , 
+              aes(x = x, y = y, 
+                  fill = SJER_dsmCrop)) + 
+  geom_raster(data = DSM_hill_SJER_df, 
+              aes(x = x, y = y, 
+                  alpha = SJER_dsmHill)) +
+  scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
+  coord_quickmap()
