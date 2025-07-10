@@ -9,10 +9,11 @@ library(dplyr)
 
 
 # these 2 lines are for good hygiene
-current_episode <- 1
+current_episode <- 2
 
 # who can tell me how to do this with pipe? %>% 
-# rm(list=ls())
+ rm(list=ls())
+
 
 DSM_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 DSM_HARV_df <- as.data.frame(DSM_HARV, xy=TRUE)
@@ -31,6 +32,8 @@ str(DSM_HARV_df)
 ggplot() + 
   geom_bar(data=DSM_HARV_df, aes(x=fct_elevation))
 
+unique(DSM_HARV_df$fct_elevation)
+
 # let's round off our chunks
 custom_bins <- c(300, 350, 400, 450)
 
@@ -38,6 +41,9 @@ DSM_HARV_df <- DSM_HARV_df %>%
   mutate(fct_elevation2 = cut(HARV_dsmCrop, breaks=custom_bins))
 
 str(DSM_HARV_df)
+
+ggplot() + 
+  geom_bar(data=DSM_HARV_df, aes(x=fct_elevation2))
 
 # here's the old continuous one:
 ggplot() +
@@ -60,10 +66,12 @@ ggplot() +
 # let's name our color scheme:
 my_colors <- terrain.colors(3)
 
+my_colors
+
 # let's turn off the axis labels:
 ggplot() +
   geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
-                                       fill = fct_elevation_2)) + 
+                                       fill = fct_elevation2)) + 
   scale_fill_manual(values = my_colors, name = "Elevation") +
   theme(axis.title = element_blank()) + 
   coord_quickmap()
@@ -76,6 +84,15 @@ ggplot() +
 #  * Axis labels.
 #  * A plot title.
 
+DSM_HARV_df <- DSM_HARV_df %>% 
+  mutate(fct_elevation6 = cut(HARV_dsmCrop, breaks=6))
+
+ggplot() +
+  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
+                                       fill = fct_elevation6)) + 
+  scale_fill_manual(values = terrain.colors(6), name = "Elevation in 6 bins") +
+  ggtitle("My 6 bin map") + 
+  coord_quickmap()
 
 
 
@@ -144,4 +161,18 @@ ggplot() +
 #   * include a title for each map,
 #   * experiment with various alpha values and color palettes to represent the data.
 
-
+DSM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
+DSM_SJER_df <- as.data.frame(DSM_SJER, xy=TRUE)
+DSM_SJER_df <- DSM_SJER_df %>% 
+  mutate(fct_elevation = cut(SJER_dsmCrop, breaks=3))
+DSM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill.tif")
+DSM_hill_SJER_df <- as.data.frame(DSM_hill_SJER, xy=TRUE)
+ggplot() +
+  geom_raster(data = DSM_SJER_df , aes(x = x, y = y, fill = fct_elevation)) + 
+  scale_fill_manual(values = terrain.colors(3), name = "Elevation") +
+  theme(axis.title.y = element_blank()) + 
+  theme(axis.title.x = element_blank()) + 
+  ggtitle("San Joaquin Experimental Range DSM") +
+  geom_raster(data = DSM_hill_SJER_df , aes(x = x, y = y, alpha = SJER_DSMhill)) + 
+  coord_quickmap() +
+  scale_alpha(range = c(0.15, 0.65), guide = "none")
