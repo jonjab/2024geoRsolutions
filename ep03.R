@@ -99,12 +99,33 @@ res(DTM_hill_utm18n)
 # challenge: San Joaquin DSM
 DSM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
 DSM_SJER_df <- as.data.frame(DSM_SJER, xy=TRUE)
-DSM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill.tif")
+DSM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill_WGS84.tif")
 DSM_hill_SJER_df <- as.data.frame(DSM_hill_SJER, xy=TRUE)
 
-crs(DSM_SJER) == crs(DSM_hill_SJER)
+res(DSM_SJER) == res(DSM_hill_SJER)
+# also false
+
+
 str(DSM_SJER_df)
 str(DSM_hill_SJER_df)
+
+# this won't work:
+ggplot() +
+  geom_raster(data = DSM_SJER_df , 
+              aes(x = x, y = y, 
+                  fill = SJER_dsmCrop)) + 
+  geom_raster(data = DSM_hill_SJER_df, 
+              aes(x = x, y = y, 
+                  alpha = SJER_DSMhill_WGS84)) +
+  scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
+  coord_quickmap()
+
+
+# this makes resolution match just by projecting. 
+DSM_hill_SJER <- project(DSM_hill_SJER, DSM_SJER)
+DSM_hill_SJER_df <- as.data.frame(DSM_hill_SJER, xy=TRUE)
+
+res(DSM_hill_SJER) == res(DSM_SJER)
 
 ggplot() +
   geom_raster(data = DSM_SJER_df , 
@@ -112,6 +133,17 @@ ggplot() +
                   fill = SJER_dsmCrop)) + 
   geom_raster(data = DSM_hill_SJER_df, 
               aes(x = x, y = y, 
-                  alpha = SJER_dsmHill)) +
+                  alpha = SJER_DSMhill_WGS84)) +
+  scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
+  coord_quickmap()
+
+
+ggplot() +
+  geom_raster(data = DSM_SJER_df , 
+              aes(x = x, y = y, 
+                  fill = SJER_dsmCrop)) + 
+  geom_raster(data = DSM_hill_SJER_df, 
+              aes(x = x, y = y, 
+                  alpha = SJER_DSMhill_WGS84)) +
   scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
   coord_quickmap()
