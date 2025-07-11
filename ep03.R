@@ -22,7 +22,6 @@ DTM_hill_HARV <-
   rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_DTMhill_WGS84.tif")
 
 DTM_HARV_df <- as.data.frame(DTM_HARV, xy = TRUE)
-
 DTM_hill_HARV_df <- as.data.frame(DTM_hill_HARV, xy = TRUE)
 
 
