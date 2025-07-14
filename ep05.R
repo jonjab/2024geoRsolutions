@@ -35,7 +35,6 @@ dev.off()
 RGB_band2_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif", lyr=2)
 plot(RGB_band2_HARV)
 
-par(reset)
 
 # Challenge: Making Sense of Single Band Images
 # the lesson wants us to compare these visually.
