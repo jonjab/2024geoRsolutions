@@ -81,9 +81,15 @@ ggplot(CHM_HARV_df) +
 #    Include an appropriate color palette for the data, plot title and no axes ticks / labels.
 
 
+# Efficient Raster Calculations
+# lapp() never, ever comes up again. 
+# skip for time?
+
+# Export a geotiff
+#
 
 
-
+# final challenge: do it all again in the desert.
 
 DTM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
 DSM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
