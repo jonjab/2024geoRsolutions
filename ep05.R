@@ -18,9 +18,12 @@ rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
 
 # we will start with plotting 1 band:
 RGB_band1_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif", lyr=1)
-# base plot is faster:
+# base plot is faster that doing the ggplots:
 plot(RGB_band1_HARV)
 
+
+# but it mucks up the graphics window
+dev.off()
 
 
 # Challenge
@@ -31,6 +34,8 @@ plot(RGB_band1_HARV)
 # Import A Specific Band
 RGB_band2_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif", lyr=2)
 plot(RGB_band2_HARV)
+
+par(reset)
 
 # Challenge: Making Sense of Single Band Images
 # the lesson wants us to compare these visually.
@@ -96,3 +101,4 @@ methods(class=class(RGB_stack_HARV))
 #  between HARV_Ortho_wNA.tif and HARV_RGB_Ortho.tif (R object RGB_stack). 
 
 #  How can you check?
+
