@@ -149,7 +149,7 @@ crs(DSM_HARV)
 crs(SJER_DSM)
 
 #  2. What is the NoDataValue?
-describe(SJER_DSM)
+describe("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
 
 #  3. What is resolution of the raster data?
 #  4. How large would a 5x5 pixel area be on the Earth’s surface?
