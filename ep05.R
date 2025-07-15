@@ -16,7 +16,8 @@ nlyr(rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.
 rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif") %>% 
   nlyr()
 
-# we will start with plotting 1 band:
+# we will start with plotting 1 band
+# of a 3-band raster:
 RGB_band1_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif", lyr=1)
 # base plot is faster that doing the ggplots:
 plot(RGB_band1_HARV)
@@ -28,7 +29,10 @@ dev.off()
 
 # Challenge
 # discuss: is this gratuitous? have
-# we had enough of summary()?
+# we had enough of summary() and standard-out?
+
+
+
 
 
 # Import A Specific Band
@@ -63,6 +67,10 @@ RGB_stack_HARV[[2]]
 
 # Create A Three Band Image
 plotRGB(RGB_stack_HARV, r=1, g=2, b=3)
+
+
+
+
 
 # we may want it to look better:
 plotRGB(RGB_stack_HARV, r=1, g=2, b=3,
@@ -101,3 +109,50 @@ methods(class=class(RGB_stack_HARV))
 
 #  How can you check?
 
+
+# SpatRaster in R
+str(RGB_stack_HARV)
+RGB_stack_HARV
+
+# spatraster dataset
+# for most purposes: these are the same.
+RGB_sds_HARV <- sds(RGB_stack_HARV)
+
+str(RGB_sds_HARV)
+
+# but there can be multiple rasters:
+RGB_sds_HARV <- sds(list(RGB_stack_HARV, RGB_stack_HARV))
+
+# what can you send to these?
+# compare the lists:
+
+?rast
+?sds
+
+# like an Esri RasterCatalog???
+
+# you can call each raster individually
+# for the teachers: are stacks what we use for the small
+# multiple NDVIs?
+RGB_sds_HARV[[1]]
+RGB_sds_HARV[[2]]
+
+# Challenge: ############
+#   What Functions Can Be Used on an R Object of a particular class?
+#  We can view various functions (or methods) available to use on an R object with methods(class=class(objectNameHere)). Use this to figure out:
+#  
+#  What methods can be used on the RGB_stack_HARV object?
+#  What methods can be used on a single band within RGB_stack_HARV?
+
+
+
+
+
+
+
+
+
+
+
+
+#  Why do you think there isn’t a difference?
