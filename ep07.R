@@ -38,13 +38,15 @@ ggplot() +
 
 # make them color and on the legend
 ggplot() +
-  geom_sf(data = footpath_HARV, aes(color = factor(OBJECTID)), size = 1.5) +
+  geom_sf(data = footpath_HARV, aes(color = factor(OBJECTID)), linewidth = 1.5) +
   labs(color = 'Footpath ID') +
   ggtitle("NEON Harvard Forest Field Site", subtitle = "Footpaths using color") +
   coord_sf()
 
 
 # challenge: subset lines
+unique(lines_HARV$TYPE)
+
 boardwalk_HARV <- lines_HARV %>%
   filter(TYPE == "boardwalk")
 
@@ -61,7 +63,7 @@ stoneWall_HARV <- lines_HARV %>%
 nrow(stoneWall_HARV)
 
 ggplot() +
-  geom_sf(data = stoneWall_HARV, aes(color = factor(OBJECTID)), size = 1.5) +
+  geom_sf(data = stoneWall_HARV, aes(color = factor(OBJECTID)), linewidth = 1.5) +
   labs(color = 'Wall ID') +
   ggtitle("NEON Harvard Forest Field Site", subtitle = "Stonewalls") +
   coord_sf()
