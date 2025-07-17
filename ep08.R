@@ -1,6 +1,5 @@
 # episode 8
 
-
 rm(list=ls())
 current_episode <- 8
 
@@ -20,8 +19,8 @@ road_colors <-c("blue", "green", "navy", "purple")
 
 ggplot() +
   geom_sf(data = aoi_boundary_HARV, fill = "grey", color = "darkgrey") +
-  geom_sf(data = lines_HARV, aes(color = TYPE), size = 1) +
-  scale_fill_manual(road_colors) +
+  geom_sf(data = lines_HARV, aes(color = TYPE), linewidth = 1) +
+  scale_color_manual(values = road_colors) +
   geom_sf(data = point_HARV) +
   ggtitle("NEON Harvard Forest Field Site") +
   coord_sf()
@@ -29,22 +28,15 @@ ggplot() +
 ggplot() +
   geom_sf(data = aoi_boundary_HARV, fill = "gray", color="black") +
   geom_sf(data = point_HARV, aes(fill=Sub_Type)) +
-  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", size = 1) +
+  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", linewidth = 1) +
   scale_color_manual(values=road_colors, name="Line Type") + 
-  scale_fill_manual(values="black", name = "Tower Location")
-    coord_sf()
+  scale_fill_manual(values="black", name = "Tower Location") +
+  coord_sf()
   
-    
 HARV_CHM <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
 HARV_CHM_df <- as.data.frame(HARV_CHM, xy=TRUE)
 str(HARV_CHM_df)
 
 # challenge 
-ggplot() +
-  geom_raster(data = HARV_CHM_df, aes(x=x, y=y, fill = HARV_chmCrop)) +
-  geom_sf(data = aoi_boundary_HARV, fill = "gray", color="black") +
-  geom_sf(data = point_HARV, color="black") +
-  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", size = 1) +
-  scale_color_manual(values=road_colors, name="Line Type") + 
-coord_sf()
+
 
