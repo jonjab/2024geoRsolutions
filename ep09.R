@@ -25,7 +25,7 @@ country_boundary_US <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layer
 
 ggplot() +
   geom_sf(data = state_boundary_US, color = "gray60") +
-  geom_sf(data = country_boundary_US, color = "black",alpha = 0.25,size = 5) +
+  geom_sf(data = country_boundary_US, color = "black",alpha = 0.25, linewidth = 5) +
   ggtitle("Map of Contiguous US State Boundaries") +
   coord_sf()
 
@@ -216,7 +216,7 @@ ggplot() +
   geom_sf(data = us_outline, fill = "gray", color="black") +
   geom_sf(data = mass, color="black") +
   geom_sf(data=tower, color="red") +
-  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", size = 1) +
+  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", linewidth = 1) +
   geom_raster(data = HARV_CHM_df, aes(x=x, y=y, fill = HARV_chmCrop)) +
   coord_sf()
 
@@ -225,20 +225,20 @@ ggplot() +
 ggplot() +
   geom_sf(data = mass, color="black") +
   geom_sf(data=tower, color="red") +
-  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", size = 1) +
+  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", linewidth  = 1) +
   geom_raster(data = HARV_CHM_df, aes(x=x, y=y, fill = HARV_chmCrop)) +
   coord_sf()
 
 
 # is it the lines?
 ggplot() +
-  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", size = 1) +
+  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", linewidth  = 1) +
   geom_raster(data = HARV_CHM_df, aes(x=x, y=y, fill = HARV_chmCrop)) +
   coord_sf()
 
 # seems the raster needs to match the projection of the FIRST layer
 ggplot() +
-  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", size = 1) +
+  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", linewidth  = 1) +
   geom_sf(data = mass, color="black") +
   geom_sf(data=tower, color="red") +
   geom_raster(data = HARV_CHM_df, aes(x=x, y=y, fill = HARV_chmCrop)) +
