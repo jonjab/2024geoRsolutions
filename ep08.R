@@ -33,6 +33,9 @@ ggplot() +
   scale_fill_manual(values="black", name = "Tower Location") +
   coord_sf()
   
+
+## STOPPED HERE
+
 HARV_CHM <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
 HARV_CHM_df <- as.data.frame(HARV_CHM, xy=TRUE)
 str(HARV_CHM_df)
