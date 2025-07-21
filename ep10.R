@@ -4,18 +4,29 @@
 rm(list=ls())
 current_episode <- 10
 
-# library(sf)
-# library(terra)
-# library(ggplot2)
-# library(dplyr)
+library(sf)
+library(terra)
+library(ggplot2)
+library(dplyr)
+
+# Spatial Data in Text Format
+#   you will see data come like this
+
 
 # Import csv that has x, y point locations
 plot_locations_HARV <-
   read.csv("data/NEON-DS-Site-Layout-Files/HARV/HARV_PlotLocations.csv")
 
+# Identify X,Y Location Columns
+head(plot_locations_HARV)
 str(plot_locations_HARV)
 
+
 # Our dataset has columns "easting" and "northing" (UTM coordinates)
+# and these are in meters:
+head(plot_locations_HARV$easting)
+
+
 # Additionally, "geodeticDa" and "utmZone" contain the datum and projection
 # Do we have everything we need to know about the crs? Yes!
 names(plot_locations_HARV)
@@ -29,16 +40,21 @@ View(plot_locations_HARV)
 plot_locations_sp_HARV <- st_as_sf(plot_locations_HARV,
                                    coords = c("easting", "northing"),
                                    crs = 32618)
-crs(plot_locations_sp_HARV, proj = TRUE)
+crs(plot_locations_sp_HARV)
 
 # Of course, if I already had a vector with this crs, I could use that crs
 point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
-crs(point_HARV, proj = TRUE)
+crs(point_HARV)
 
-# The same as before, with same result, but using the crs of another vector dataset
+
+# The same as before, but using the crs of another vector dataset
 plot_locations_sp_HARV <- st_as_sf(plot_locations_HARV,
                                    coords = c("easting", "northing"),
                                    crs = crs(point_HARV))
+
+# I can store that for later too:
+utm18nCRS <- st_crs(point_HARV)
+
 
 
 ## Plot our data
@@ -46,11 +62,24 @@ ggplot() +
   geom_sf(data = plot_locations_sp_HARV) +
   ggtitle("Map of Plot Locations")
 
-## Plot multiple vectors - We can skip it
-# Here the idea is ggplot increases the boundaries
-# of our plot to graph all objectecs
+ggplot() +
+  geom_sf(data = point_HARV) +
+  ggtitle("Tower Location")
 
-# Read AOI polygon
+# together
+ggplot() +
+  geom_sf(data = point_HARV, color = "red") +
+  geom_sf(data = plot_locations_sp_HARV, color = "blue") +
+  ggtitle("Map of Plot Locations and Tower Location")
+
+
+
+
+## Plot Extent
+# Here the idea is ggplot increases the boundaries
+# of our plot to graph all objects that we include
+
+# Read AOI polygon from episode 6:
 aoi_boundary_HARV <- st_read(
   "data/NEON-DS-Site-Layout-Files/HARV/HarClip_UTMZ18.shp")
 
@@ -104,6 +133,6 @@ ggplot() +
 
 ## Export to an ESRI shapefile
 st_write(plot_locations_sp_HARV,
-         "data/PlotLocations_HARV.shp", append = FALSE)
+         "data/PlotLocations_HARV.shp", append = FALSE, driver = "ESRI Shapefile")
 # I had to add the append = FALSE argument as I already had the file and needed to replace it
 
