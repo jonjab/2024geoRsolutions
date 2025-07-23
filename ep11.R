@@ -63,17 +63,24 @@ st_bbox(aoi_boundary_HARV)
 # Crop the Canopy Height Model to the extent of the study plot locations.
 # Plot the vegetation plot location points on top of the Canopy Height Model.
 
-CHM_plots_HARVcrop <- st_read("data/NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp")
+aoi_points <- st_bbox(plot_locations_sp_HARV)
 
-aoi <- st_bbox(CHM_plots_HARVcrop)
-CHM_HARV_Cropped_2_Plots <- crop(CHM_HARV, aoi)
-plot(CHM_HARV_Cropped_2_Plots)
+# See the bounding box of previous HARV AOI, and from our new study plot locations
+ggplot() +
+  geom_raster(data = CHM_HARV_df, aes(x = x, y = y, fill = HARV_chmCrop)) +
+  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
+  geom_sf(data = aoi_boundary_HARV, color = "blue", fill = NA) +
+  geom_sf(data = st_as_sfc(aoi_points), color = "red", fill = NA) +
+  coord_sf()
 
-CHM_plots_HARVcrop_df <- as.data.frame(CHM_HARV_Cropped_2_Plots, xy=TRUE)
+CHM_plots_HARVcrop <- crop(CHM_HARV, aoi_points)
+plot(CHM_plots_HARVcrop)
+
+CHM_plots_HARVcrop_df <- as.data.frame(CHM_plots_HARVcrop, xy=TRUE)
 str(CHM_plots_HARVcrop_df)
 
 
-# plots and heights
+# Finally, use the study plot locations and plot them on top of the CHM
 
 ggplot() +
   geom_raster(data = CHM_plots_HARVcrop_df,
@@ -83,43 +90,9 @@ ggplot() +
   coord_sf()
 
 
-
-
-ggplot() +
-  geom_raster(data = CHM_plots_HARVcrop_df,
-              aes(x = x, y = y, fill = HARV_chmCrop)) +
-  geom_sf(data = plot_locations_sp_HARV, color = "blue", fill = NA) +
-  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
-  coord_sf()
-
-
-ggplot() +
-  geom_raster(data = CHM_plots_HARVcrop_df,
-              aes(x = x, y = y, fill = HARV_chmCrop)) +
-  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
-  geom_sf(data = plot_locations_sp_HARV, color = "blue", fill = NA) +
-  coord_sf()
-
-# 1 lonely dot lives outside the extent. 
+# Use a custom extent to crop the CHM
 new_extent <- ext(732161.2, 732238.7, 4713249, 4713333)
 CHM_HARV_manual_crop <- crop(CHM_HARV, new_extent)
-
-CHM_HARV_manual_crop_df <- as.data.frame(CHM_HARV_manual_crop, xy=TRUE)
-
-
-ggplot() +
-  geom_raster(data = CHM_HARV_manual_crop_df,
-              aes(x = x, y = y, fill = HARV_chmCrop)) +
-  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
-  geom_sf(data = plot_locations_sp_HARV, color = "blue", fill = NA) +
-  coord_sf()
-
-ggplot() +
-  geom_raster(data = CHM_HARV_manual_crop_df,
-              aes(x = x, y = y, fill = HARV_chmCrop)) +
-  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
-  geom_sf(data = aoi_boundary_HARV, color = "blue", fill = NA) +
-  coord_sf()
 
 
 # Extract Data using x,y Locations
@@ -145,7 +118,13 @@ str(mean_tree_height_tower)
 mean_tree_height_tower
 
 # challenge:
-# do it for all the plot location points.
-# is this the first time we use this data?
-# points were created in ep. 10 OR can be found:
-plot_locations_sp_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp")
+# do it for all the plot location points plot_locations_sp_HARV
+
+# extract data at each plot location
+mean_tree_height_plots_HARV <- extract(x = CHM_HARV,
+                                       y = st_buffer(plot_locations_sp_HARV,
+                                                     dist = 20),
+                                       fun = mean)
+
+# view data
+mean_tree_height_plots_HARV
