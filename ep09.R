@@ -35,7 +35,7 @@ country_boundary_US <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layer
 
 ggplot() +
   geom_sf(data = state_boundary_US, color = "gray60") +
-  geom_sf(data = country_boundary_US, color = "black", alpha = 0.75, linewidth = 5) +
+  geom_sf(data = country_boundary_US, color = "black", alpha = 0.75, linewidth = 2) +
   ggtitle("Silly Map of US") +
   coord_sf()
 
@@ -51,7 +51,8 @@ crs(country_boundary_US, proj = TRUE)
 
 # this is the narrative
 # it don't work.
-st_crs(state_boundary_US$proj4string)
+# typo in the solution!!!
+st_crs(state_boundary_US)$proj4string
 
 
 # CRS Units - View Object Extent
@@ -118,8 +119,8 @@ ggplot() +
 # 4 Add a legend that shows both the state boundary (as a line)
 
 ggplot() +
-  geom_sf(data = NE.States.Boundary.US, aes(color ="color"),
-          show.legend = "line") +
+  geom_sf(data = NE.States.Boundary.US,
+          show.legend = "line", aes(color ="color")) +
   scale_color_manual(name = "", labels = "State Boundary",
                      values = c("color" = "gray18")) +
   geom_sf(data = point_HARV, aes(shape = "shape"), color = "purple") +
@@ -128,6 +129,8 @@ ggplot() +
   ggtitle("Fisher Tower location") +
   theme(legend.background = element_rect(color = NA)) +
   coord_sf()
+
+# the color = color and shape = shape force them into the legend
 
 # everything from here down
 # is improvisation to make an example
@@ -181,7 +184,7 @@ NE.States.Boundary.US$STUSPS
 mass <- filter(NE.States.Boundary.US, STUSPS == "MA")
 
 
-
+# black is missing
 ggplot() +
   geom_sf(data = mass, aes(color ="black"),
           show.legend = "line") +
@@ -198,6 +201,17 @@ ggplot() +
   theme(legend.background = element_rect(color = NA)) +
   coord_sf()
 
+ggplot() +
+  geom_sf(data = mass, aes(color ="black"),
+          show.legend = "line") +
+  geom_sf(data = point_HARV, aes(shape = "shape"), color = "purple") +
+  scale_shape_manual(name = "", labels = "Fisher Tower",
+                     values = c("shape" = 19)) +
+  geom_raster(data = HARV_CHM_df, aes(x=x, y=y, fill = HARV_chmCrop)) +
+  theme(legend.background = element_rect(color = NA)) +
+  ggtitle("Just Massachusetts") +
+  theme(legend.background = element_rect(color = NA)) +
+  coord_sf()
   
 
 
@@ -206,7 +220,7 @@ mass <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/Boundary-US-S
 new_england <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/Boundary-US-State-NEast.shp")
 us_outline <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-Boundary-Dissolved-States.shp")
 tower <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
-
+lines_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
 
 
 ggplot() +
@@ -237,7 +251,7 @@ ggplot() +
   geom_raster(data = HARV_CHM_df, aes(x=x, y=y, fill = HARV_chmCrop)) +
   coord_sf()
 
-
+# st_transform() is the vector version of project()
 
 
 
