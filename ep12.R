@@ -5,6 +5,7 @@
 #import, explore, and plot NDVI data derived for several dates through the year
 #view RGB imagery used to derive NDVI time series 
 
+rm(list=ls())
 current_episode <- 12
 
 library(terra)
@@ -20,10 +21,13 @@ library(dplyr)
 NDVI_HARV_path <- "data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI"
 NDVI_HARV_path
 
+# 'paste' the path to the filenames
 all_NDVI_HARV <- list.files(NDVI_HARV_path,
                             full.names = TRUE,
                             pattern = ".tif$")
-#check file names
+
+# check file names
+# these are in 'Julian days.' the day of the year
 all_NDVI_HARV
 
 # create raster stack
@@ -31,14 +35,19 @@ NDVI_HARV_stack <- rast(all_NDVI_HARV)
 
 # check crs
 crs(NDVI_HARV_stack, proj = TRUE)
+crs(NDVI_HARV_stack)
 
 #quick challenge
 #what are the x,y resolution? 
 #what units are the above resolution in?
 
+
 ext(NDVI_HARV_stack)
 yres(NDVI_HARV_stack)
 xres(NDVI_HARV_stack)
+# y'all will get used to seeing 30m data
+# because that's Landsat.
+
 
 # Plotting time series data 
 # use pivot longer to clean up data so there is a single column with NDVI obs
@@ -52,9 +61,13 @@ ggplot() +
   geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
   facet_wrap(~ variable)
 
+
+summary(NDVI_HARV_stack_df$value)
+
 #scale factors
 #there is a specific scale factor with this data: 10K
-# used to maintain smaller file sizes by removing decimal places
+
+# used to maintain smaller file sizes by removing floats?
 # ^^ dubious explanation. Also to be integers?
 
 NDVI_HARV_stack <- NDVI_HARV_stack/10000
