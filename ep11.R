@@ -1,5 +1,6 @@
 # episode 11
-# dealing with CRSs
+# Manipulate Raster Data
+# aka: cropping while dealing with CRSs
 
 rm(list=ls())
 current_episode <- 11
