@@ -1,5 +1,7 @@
 # episode 11
-# dealing with CRSs
+# Manipulating Rasters
+
+# crop rasters to vector extents
 
 rm(list=ls())
 current_episode <- 11
@@ -23,7 +25,7 @@ plot_locations_sp_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/PlotLocat
 
 
 # Crop a Raster Using Vector Extent
-# setup diagram:
+# setup diagram in the lesson:
 ggplot() +
   geom_raster(data = CHM_HARV_df, aes(x = x, y = y, fill = HARV_chmCrop)) +
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
@@ -100,7 +102,7 @@ ggplot() +
   geom_sf(data = plot_locations_sp_HARV, color = "blue", fill = NA) +
   coord_sf()
 
-# 1 lonely dot lives outside the extent. 
+# 2 lonely dots live outside the extent. 
 new_extent <- ext(732161.2, 732238.7, 4713249, 4713333)
 CHM_HARV_manual_crop <- crop(CHM_HARV, new_extent)
 

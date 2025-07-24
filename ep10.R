@@ -111,12 +111,24 @@ ggplot() +
 # Read data and take a look to the values
 newplot_locations_HARV <-
   read.csv("data/NEON-DS-Site-Layout-Files/HARV/HARV_2NewPhenPlots.csv")
+
+# these are plain-old lat-long decimal degrees. 
+# so we can the crs from the US state boundaries file.
 str(newplot_locations_HARV)
 
+# from episode 9:
+state_boundary_US <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-State-Boundaries-Census-2014.shp") %>%
+  st_zm()
+geogCRS <- st_crs(state_boundary_US)
+geogCRS
+
+
 # Convert to spatial dataframe
+# now we can paste on the CRS by using its name:
+str(newplot_locations_HARV)
 newPlot.Sp.HARV <- st_as_sf(newplot_locations_HARV,
                             coords = c("decimalLon", "decimalLat"),
-                            crs = 4326)
+                            crs = geogCRS)
 
 # Create plot with all points
 ggplot() +
@@ -134,5 +146,6 @@ ggplot() +
 ## Export to an ESRI shapefile
 st_write(plot_locations_sp_HARV,
          "data/PlotLocations_HARV.shp", append = FALSE, driver = "ESRI Shapefile")
-# I had to add the append = FALSE argument as I already had the file and needed to replace it
+# add the append = FALSE argument just in case you already 
+# have the file and needed to replace it
 
