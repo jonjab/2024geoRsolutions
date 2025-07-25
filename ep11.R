@@ -163,19 +163,21 @@ point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp"
 
 str(point_HARV)
 
-# The code commented below raises an error as it confuses the extract()
-# function from tidyr with the one from terra. Hence, we need to use terra:extract()
-# But this is a good teaching moment
+# A good teaching moment
+# If you loaded tidyr, this will raise an error as extract()
+# from tidyr will conflict with the one from terra. 
+# don't forget how to specify which libraries get used: terra:extract()
 # Jon' didn't get that error. is that because tidyr isn't loaded?
 
-
+# if this throws an error:
 mean_tree_height_tower <- extract(x = CHM_HARV,
                                    y = st_buffer(point_HARV, dist = 20),
                                    fun = mean)
-
+# this will not:
 mean_tree_height_tower <- terra::extract(x = CHM_HARV,
                                   y = st_buffer(point_HARV, dist = 20),
                                   fun = mean)
+
 str(mean_tree_height_tower)
 mean_tree_height_tower
 
@@ -186,7 +188,7 @@ mean_tree_height_tower
 # do it for all the plot location points plot_locations_sp_HARV
 
 # extract data at each plot location
-mean_tree_height_plots_HARV <- extract(x = CHM_HARV,
+mean_tree_height_plots_HARV <- terra::extract(x = CHM_HARV,
                                        y = st_buffer(plot_locations_sp_HARV,
                                                      dist = 20),
                                        fun = mean)
@@ -194,3 +196,20 @@ mean_tree_height_plots_HARV <- extract(x = CHM_HARV,
 # view data
 mean_tree_height_plots_HARV
 
+
+
+# Review challenge: let's graph our tree heights:
+# plot data
+
+ggplot(data = mean_tree_height_plots_HARV, aes(x=ID, y=HARV_chmCrop)) +
+  geom_col() +
+  ggtitle("Mean Tree Height at each Plot") +
+  xlab("Plot ID") +
+  ylab("Tree Height (m)")
+
+# tallest to lowest plots:
+ggplot(data = mean_tree_height_plots_HARV, aes(reorder(ID, -HARV_chmCrop), HARV_chmCrop)) +
+  geom_col() +
+  ggtitle("Plots by mean tree height") +
+  xlab("Plot ID") +
+  ylab("Tree Height (m)")
