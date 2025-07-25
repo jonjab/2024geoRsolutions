@@ -5,45 +5,38 @@
 
 current_episode <- 13
 
+library(terra)
 library(ggplot2)
+library(tidyr)
 library(RColorBrewer)
 
 #install.packages("RColorBrewer") if necessary 
 
+# objects from last time
+NDVI_HARV_path <- "data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI"
+all_NDVI_HARV <- list.files(NDVI_HARV_path,
+                            full.names = TRUE,
+                            pattern = ".tif$")
 
+NDVI_HARV_stack <- rast(all_NDVI_HARV)
+NDVI_HARV_stack_df <- as.data.frame(NDVI_HARV_stack, xy = TRUE) %>%
+  pivot_longer(-(x:y), names_to = "variable", values_to = "value")
 
 # episode 13 starts
-library(RColorBrewer)
 ggplot() +
   geom_raster(data=NDVI_HARV_stack_df, aes(x=x, y=y, fill=value)) +
   facet_wrap(~variable)+
-  ggtitle("Landsat NDVIs")+
+  ggtitle("Landsat NDVIs", subtitle = "NEON Harvard Forest")
+
+
+# first get rid of everything
+# theme_void() removes all the axis labels, ticks, and background
+ggplot() +
+  geom_raster(data=NDVI_HARV_stack_df, aes(x=x, y=y, fill=value)) +
+  facet_wrap(~variable)+
+  ggtitle("Landsat NDVIs", subtitle = "NEON Harvard Forest") +
   theme_void()
 
-brewer.pal(9, "YlGn")
-green_colors <- brewer.pal(9, "YlGn") %>% 
-  colorRampPalette()
-
-
-ggplot() +
-  geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
-  facet_wrap(~variable) +
-  ggtitle("Landsat NDVI", subtitle = "NEON Harvard Forest") + 
-  theme_void() + 
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"), 
-        plot.subtitle = element_text(hjust = 0.5)) + 
-  scale_fill_gradientn(name = "NDVI", colours = green_colors(20))
-
-
-
-
-
-#first remove the obnoxious x and y axis lables since its messy
-ggplot() +
-  geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
-  facet_wrap(~variable) +
-  ggtitle("Landsat NDVI", subtitle = "NEON Harvard Forest") + 
-  theme_void()
 
 #center the plot title and subtitles
 #hjust = horizontal justification
@@ -145,4 +138,23 @@ ggplot() +
   theme(plot.title = element_text(hjust = 0.5, face = "bold"), 
         plot.subtitle = element_text(hjust = 0.5)) +
   scale_fill_gradientn(name = "NDVI", colours = brown_green_colors(20))
+
+
+
+
+
+
+brewer.pal(9, "YlGn")
+green_colors <- brewer.pal(9, "YlGn") %>% 
+  colorRampPalette()
+
+
+ggplot() +
+  geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
+  facet_wrap(~variable) +
+  ggtitle("Landsat NDVI", subtitle = "NEON Harvard Forest") + 
+  theme_void() + 
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"), 
+        plot.subtitle = element_text(hjust = 0.5)) + 
+  scale_fill_gradientn(name = "NDVI", colours = green_colors(20))
 
