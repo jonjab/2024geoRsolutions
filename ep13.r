@@ -1,8 +1,9 @@
 # ep13
 # creating publication quality graphics
 
-# customizing raster plots using ggplot2 package
+# customizing raster plots using themes in ggplot2 package
 
+rm(list=ls())
 current_episode <- 13
 
 library(terra)
@@ -109,11 +110,14 @@ raster_names <- names(NDVI_HARV_stack)
 raster_names <- gsub("_HARV_ndvi_crop", "", raster_names)
 raster_names
 
-# last time we added an X in 
-# instead of gsub, use sub, add "" and "Day " 
+# last time we added an X
+# but because we cleared, and the lesson didn't, those x's are gone.
+# so instead of gsub like in the lesson, 
+# we use sub, add "" and "Day " 
 raster_names  <- sub( "", "Day ", raster_names)
 raster_names
 
+# names look good. assign them
 labels_names <- setNames(raster_names, unique(NDVI_HARV_stack_df$variable))
 
 ggplot() +
@@ -125,9 +129,9 @@ ggplot() +
         plot.subtitle = element_text(hjust = 0.5)) + 
   scale_fill_gradientn(name = "NDVI", colours = green_colors(20))
 
-#changing layout of panels
-# nrow in facetwrap
 
+#changing layout of panels
+# ncol in facetwrap
 ggplot() +
   geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
   facet_wrap(~variable, ncol = 5, 
@@ -139,7 +143,8 @@ ggplot() +
   scale_fill_gradientn(name = "NDVI", colours = green_colors(20))
 
 # Challenge Divergent Color Ramps
-# label each title julian day with the julian day value (use sub or gsub())
+
+# label each tile 'julian day' with the julian day value following (use sub or gsub())
 # change the color ramp to a divergent brown to green color ramp
 
 raster_names  <- gsub("Day","Julian Day", raster_names)
@@ -158,22 +163,8 @@ ggplot() +
         plot.subtitle = element_text(hjust = 0.5)) +
   scale_fill_gradientn(name = "NDVI", colours = brown_green_colors(20))
 
+# what do you think? Is it better?
 
 
 
-
-
-brewer.pal(9, "YlGn")
-green_colors <- brewer.pal(9, "YlGn") %>% 
-  colorRampPalette()
-
-
-ggplot() +
-  geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
-  facet_wrap(~variable) +
-  ggtitle("Landsat NDVI", subtitle = "NEON Harvard Forest") + 
-  theme_void() + 
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"), 
-        plot.subtitle = element_text(hjust = 0.5)) + 
-  scale_fill_gradientn(name = "NDVI", colours = green_colors(20))
 
