@@ -11,6 +11,8 @@ library(dplyr)
 
 # Spatial Data in Text Format
 #   you will see data come like this
+#   often for point data. 
+#   or gps tracks
 
 
 # Import csv that has x, y point locations
