@@ -10,9 +10,9 @@ current_episode <- 11
 
 
 library(sf)
-library(terra)
 library(ggplot2)
 library(dplyr)
+library(terra)
 
 # objects we will need:
 aoi_boundary_HARV <- st_read(
@@ -155,26 +155,29 @@ CHM_HARV_manual_crop <- crop(CHM_HARV, new_extent)
 # Extract Data using x,y Locations
 # make a buffer around a point
 
-# point from episode 6:
+# location of the tower. a single point shapefile from episode 6:
 point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
 
+# Let's figure out the 
 # average tree height near our tower
+
 str(point_HARV)
 
 # The code commented below raises an error as it confuses the extract()
 # function from tidyr with the one from terra. Hence, we need to use terra:extract()
 # But this is a good teaching moment
-# mean_tree_height_tower <- extract(x = CHM_HARV,
-#                                   y = st_buffer(point_HARV, dist = 20),
-#                                   fun = mean)
+# Jon' didn't get that error. is that because tidyr isn't loaded?
+
+
+mean_tree_height_tower <- extract(x = CHM_HARV,
+                                   y = st_buffer(point_HARV, dist = 20),
+                                   fun = mean)
 
 mean_tree_height_tower <- terra::extract(x = CHM_HARV,
                                   y = st_buffer(point_HARV, dist = 20),
                                   fun = mean)
 str(mean_tree_height_tower)
 mean_tree_height_tower
-
-ggplot(data)
 
 
 
@@ -190,3 +193,4 @@ mean_tree_height_plots_HARV <- extract(x = CHM_HARV,
 
 # view data
 mean_tree_height_plots_HARV
+
