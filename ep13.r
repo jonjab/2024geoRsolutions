@@ -48,8 +48,9 @@ ggplot() +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5))
 
-#quick challenge: change the plot title to a bold font 
-#hint: part of the theme() function
+
+# challenge: change the plot title to a bold font 
+#   hint: part of the theme() function
 
 ggplot() +
   geom_raster(data = NDVI_HARV_stack_df,
@@ -60,7 +61,19 @@ ggplot() +
   theme(plot.title = element_text(hjust = 0.5, face = "bold"), 
         plot.subtitle = element_text(hjust = 0.5))
 
+# or:
+ggplot() +
+  geom_raster(data = NDVI_HARV_stack_df,
+              aes(x = x, y = y, fill = value)) +
+  facet_wrap(~ variable) +
+  ggtitle("Landsat NDVI", subtitle = "NEON Harvard Forest") + 
+  theme_void() + 
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"), 
+        plot.subtitle = element_text(hjust = 0.5))
+
+
 #Adjusting the color ramp
+
 # boo to blue 
 # yellow green? makes more sense since its NDVI greenness maybe....
 
@@ -79,6 +92,12 @@ ggplot() +
         plot.subtitle = element_text(hjust = 0.5)) + 
   scale_fill_gradientn(name = "NDVI", colours = green_colors(20))
 
+
+# check out other pallettes:
+# https://www.datavis.ca/sasmac/brewerpal.html
+
+
+
 #Refine plot and tile labels
 # remove _HARV_NDVI_crop from each label to make it shorter 
 names(NDVI_HARV_stack)
@@ -90,7 +109,7 @@ raster_names <- names(NDVI_HARV_stack)
 raster_names <- gsub("_HARV_ndvi_crop", "", raster_names)
 raster_names
 
-# there used to be an X in front but not anymore 
+# last time we added an X in 
 # instead of gsub, use sub, add "" and "Day " 
 raster_names  <- sub( "", "Day ", raster_names)
 raster_names
@@ -119,7 +138,7 @@ ggplot() +
         plot.subtitle = element_text(hjust = 0.5)) + 
   scale_fill_gradientn(name = "NDVI", colours = green_colors(20))
 
-#Challenge Divergent Color Ramps
+# Challenge Divergent Color Ramps
 # label each title julian day with the julian day value (use sub or gsub())
 # change the color ramp to a divergent brown to green color ramp
 
