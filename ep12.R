@@ -145,4 +145,3 @@ RGB_293_df$rgb <-
 ggplot() +
   geom_raster(data = RGB_293_df, aes(x, y), fill = RGB_293_df$rgb) +
   ggtitle("Julian day 293")
-
