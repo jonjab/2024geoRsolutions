@@ -7,9 +7,12 @@ pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
 rm(list=ls())
 current_episode <- 8
 
-library(sf)
+# order counts here. if sf came first, you'd get rast() errors.
 library(terra)
 library(ggplot2)
+library(sf)
+library(dplyr)
+
 
 # 1 shapefile from episode 6:
 aoi_boundary_HARV <- st_read(
@@ -19,7 +22,7 @@ aoi_boundary_HARV <- st_read(
 point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
 lines_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
 
-road_colors <-c("blue", "green", "navy", "purple")
+road_colors <- c("blue", "green", "navy", "purple")
 
 # running this line-by-line helps explain how things get layered
 # together
@@ -35,7 +38,7 @@ ggplot() +
 ggplot() +
   geom_sf(data = aoi_boundary_HARV, fill = "gray", color="black") +
   geom_sf(data = point_HARV, aes(fill=Sub_Type), 
-          shape="15",
+ #         shape="15",
           color="red") +
   geom_sf(data = lines_HARV, aes(color = TYPE), show.legend="line", linewidth = .5) +
   scale_color_manual(values=road_colors, name="Line Type") + 
@@ -46,6 +49,7 @@ ggplot() +
 ## STOPPED HERE
 
 HARV_CHM <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
+str(HARV_CHM)
 HARV_CHM_df <- as.data.frame(HARV_CHM, xy=TRUE)
 str(HARV_CHM_df)
 
@@ -53,9 +57,11 @@ str(HARV_CHM_df)
 # plot soils by type
 plot_locations <- st_read("data/NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp")
 
-plot(soilTypeOr)
-str(soilTypeOr)
-unique((soilTypeOr$soilTypeOr))
+plot(plot_locations)
+
+
+str(plot_locations)
+unique((plot_locations$soilTypeOr))
 
 soil_colors <- c("brown", "green")
 

@@ -7,9 +7,9 @@ library(pacman)
 pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
 
 
-library(terra)
 library(ggplot2)
 library(dplyr)
+library(terra)
 
 
 # these 2 lines are for good hygiene
