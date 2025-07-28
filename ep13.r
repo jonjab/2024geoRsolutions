@@ -10,6 +10,7 @@ rm(list=ls())
 current_episode <- 13
 
 library(terra)
+library(sf)
 library(ggplot2)
 library(tidyr)
 # Cindy Brewer is a cartographic color theorist
@@ -149,10 +150,9 @@ raster_names  <- sub( "", "Day ", raster_names)
 raster_names
 
 # names look good. assign them to a vector
-# an
-
 labels_names <- setNames(raster_names, unique(NDVI_HARV_stack_df$variable))
 
+# labeller is new here
 ggplot() +
   geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
   facet_wrap(~variable, labeller = labeller(variable = labels_names)) +
@@ -175,15 +175,20 @@ ggplot() +
         plot.subtitle = element_text(hjust = 0.5)) + 
   scale_fill_gradientn(name = "NDVI", colours = green_colors(20))
 
-# Challenge Divergent Color Ramps
+
+# Challenge 
+# Divergent Color Ramps
 
 # label each tile 'julian day' with the julian day value following (use sub or gsub())
 # change the color ramp to a divergent brown to green color ramp
+# 'DOY' might be a better label for Julian. 'Ordinal Day'
 
 raster_names  <- gsub("Day","Julian Day", raster_names)
 raster_names
 labels_names <- setNames(raster_names, unique(NDVI_HARV_stack_df$variable))
 
+
+# I figured out BrBG on the website.
 brown_green_colors <- colorRampPalette(brewer.pal(9, "BrBG"))
 
 
@@ -197,7 +202,7 @@ ggplot() +
   scale_fill_gradientn(name = "NDVI", colours = brown_green_colors(20))
 
 # what do you think? Is it better?
-
+# uh, the scale is wrong. 
 
 
 
