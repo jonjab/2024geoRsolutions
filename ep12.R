@@ -5,6 +5,13 @@
 #import, explore, and plot NDVI data derived for several dates through the year
 #view RGB imagery used to derive NDVI time series 
 
+# What is an NDVI?
+# NDVI is a measure of vegetation greenness.
+# the forumla is:
+# NDVI = (NIR - Red) / (NIR + Red)
+# https://www.usgs.gov/landsat-missions/landsat-normalized-difference-vegetation-index
+
+
 rm(list=ls())
 current_episode <- 12
 
@@ -14,15 +21,21 @@ library(ggplot2)
 # this might be the first time we are using tidyr
 library(tidyr)
 library(scales)
-# library(dplyr)
+library(dplyr)
 # install.packages("tidyr","scales") if not installed 
+
 
 # RGB data
 # Getting Started
+# set a path for the folder where the individual tiffs are:
 NDVI_HARV_path <- "data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI"
 NDVI_HARV_path
 
+# then get all the filenames:
 # 'paste' the path to the filenames
+
+# Data tip: $ is from regex
+# regex is the default pattern engine in R
 all_NDVI_HARV <- list.files(NDVI_HARV_path,
                             full.names = TRUE,
                             pattern = ".tif$")
@@ -32,11 +45,17 @@ all_NDVI_HARV <- list.files(NDVI_HARV_path,
 all_NDVI_HARV
 
 # create raster stack
+# this makes a 13-band raster
 NDVI_HARV_stack <- rast(all_NDVI_HARV)
+
+NDVI_HARV_stack
 
 # check crs
 crs(NDVI_HARV_stack, proj = TRUE)
 crs(NDVI_HARV_stack)
+
+# zone 18 vs 19 cartoon
+# does it do anything for us?
 
 # Challenge: Raster Metadata 
 #what are the x,y resolution? 
@@ -48,6 +67,7 @@ yres(NDVI_HARV_stack)
 xres(NDVI_HARV_stack)
 
 # these are small. Don't be surprised.
+# think NCOS sized
 dim(NDVI_HARV_stack)
 
 # y'all will get used to seeing 30m data
@@ -58,11 +78,12 @@ dim(NDVI_HARV_stack)
 
 # as.data.frame time.
 # use pivot longer to clean up data so there is a single column with NDVI obs
-# this also enable the facer_wrap 
+# this also enable the facet_wrap 
 
 NDVI_HARV_stack_df <- as.data.frame(NDVI_HARV_stack, xy = TRUE) %>%
   pivot_longer(-(x:y), names_to = "variable", values_to = "value")
 
+# facet_wrap = make 1 little graph per variable 
 ggplot() +
   geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
   facet_wrap(~ variable)
@@ -72,14 +93,21 @@ ggplot() +
   geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
   facet_grid(~ variable)
 
-summary(NDVI_HARV_stack_df$value)
 
-#scale factors
+
+#Scale Factors
+summary(NDVI_HARV_stack_df$value)
+# note the range of values in the chart and in the summary
+# NDVI is usually -1 to 1.
+
+
 #there is a specific scale factor with this data: 10K
 
-# used to maintain smaller file sizes by removing floats?
-# integer math is faster. integer objects are smaller
+# storing as integers 
+# makes for smaller file sizes and
+# integer math is faster.
 
+# the math is easy:
 NDVI_HARV_stack <- NDVI_HARV_stack/10000
 
 NDVI_HARV_stack_df <- as.data.frame(NDVI_HARV_stack, xy = TRUE) %>%
@@ -101,6 +129,7 @@ ggplot(NDVI_HARV_stack_df) +
 
 # let's look at the weather to see those days.
 # this is a red herring and a complete aside!!!
+# we will need to go back and visualize it to answer the question.
 har_met_daily <-
   read.csv("data/NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv")
 
@@ -125,21 +154,66 @@ ggplot() +
   ylab("Mean Air Temperature (C)")
 
 
+# What other ways could we investigate the outlyers?
+# potential new challenge.
 
-#Challenge: Examine RGB raster files 
-#plot RGB images for Julian Days 277 and 293
-#compare with Julian Days 133 and 197
+
+
+
+
+
+
+
+# how about precipitation:
+# can't see it in this graph
+ggplot() +
+  geom_point(data = yr_11_daily_avg, aes(jd, prec)) +
+  ggtitle("Precipitation days",
+          subtitle = "NEON Harvard Forest Field Site") +
+  xlab("Julian Day 2011") +
+  ylab("mm rain or snow")
+
+# let's look directly:
+day_277 <- yr_11_daily_avg[yr_11_daily_avg$jd == 277,]
+day_277$prec
+
+# let's look directly:
+day_293 <- yr_11_daily_avg[yr_11_daily_avg$jd == 293,]
+day_293$prec
+
+# it was raining / snowing on those days.
+
+
+# The lesson shows plots of days 133 and 197
+# Julian day 133
+# without all the ggplot:
+RGB_133 <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/133_HARV_landRGB.tif")
+names(RGB_133) <- paste0("X", names(RGB_133))
+RGB_133 <- RGB_133/255
+
+plotRGB(RGB_133, r=1, g=2, b=3, stretch="lin")    
+
+
+
+
+# Challenge: 
+# Examine RGB Raster Files 
+
+# plot RGB images for Julian Days 277 and 293
+# compare with Julian Days 133 and 197 
 
 RGB_277 <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif")
-# you'll see that the RGBs also have julian days.
+# you'll see that the RGBs are also named by julian days.
 
 
 # NOTE: Fix the bands' names so they don't start with a number!
+# because objects can't be named with a number at the start.
 names(RGB_277) <- paste0("X", names(RGB_277))
 
 RGB_277
 
-#fix to values within 0-1
+# RGBs have been scaled 0-255
+# change to values within 0-1
 RGB_277 <- RGB_277/255
 
 RGB_277_df <- as.data.frame(RGB_277, xy = TRUE)
@@ -183,23 +257,4 @@ ggplot() +
 
 
 
-# Julian day 133
-RGB_133 <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/133_HARV_landRGB.tif")
-names(RGB_133) <- paste0("X", names(RGB_133))
-RGB_133 <- RGB_133/255
-RGB_133_df <- as.data.frame(RGB_133, xy = TRUE)
-RGB_133_df$rgb <- 
-  with(RGB_133_df, rgb(X133_HARV_landRGB_1, X133_HARV_landRGB_2, 
-                       X133_HARV_landRGB_3, 1))
-ggplot() +
-  geom_raster(data = RGB_133_df, aes(x, y), fill = RGB_133_df$rgb) +
-  ggtitle("Julian day 133")
-
-
-# or without all the ggplot:
-RGB_133 <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/133_HARV_landRGB.tif")
-names(RGB_133) <- paste0("X", names(RGB_133))
-RGB_133 <- RGB_133/255
-
-plotRGB(RGB_133, r=1, g=2, b=3, stretch="lin")    
 
