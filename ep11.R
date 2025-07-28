@@ -5,6 +5,9 @@
 # Manipulate Raster Data
 # aka: cropping while dealing with CRSs
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
 rm(list=ls())
 current_episode <- 11
 

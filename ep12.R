@@ -11,6 +11,8 @@
 # NDVI = (NIR - Red) / (NIR + Red)
 # https://www.usgs.gov/landsat-missions/landsat-normalized-difference-vegetation-index
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
 
 rm(list=ls())
 current_episode <- 12

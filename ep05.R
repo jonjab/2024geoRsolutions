@@ -1,6 +1,9 @@
 # ep 5
 # color
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
 rm(list=ls())
 current_episode <- 5
 

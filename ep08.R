@@ -1,5 +1,9 @@
 # episode 8
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
+
 rm(list=ls())
 current_episode <- 8
 

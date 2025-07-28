@@ -1,6 +1,10 @@
 # ep 4
 # raster math
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
+
 rm(list=ls())
 current_episode <- 4
 

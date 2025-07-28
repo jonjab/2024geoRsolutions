@@ -6,6 +6,9 @@
 
 # customizing raster plots using themes in ggplot2 package
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
 rm(list=ls())
 current_episode <- 13
 

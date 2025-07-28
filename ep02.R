@@ -3,6 +3,10 @@
 # setting up our libraries and objects 
 # from scratch is a very good idea.
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
+
 library(terra)
 library(ggplot2)
 library(dplyr)

@@ -5,7 +5,10 @@
 # plotting pixel summary values using ggplot() 
 # comparing NDVI values between two different sites 
 
-current_episode <- 12
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
+current_episode <- 14
 
 
 avg_NDVI_HARV <- global(NDVI_HARV_stack, mean)

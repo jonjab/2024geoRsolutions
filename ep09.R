@@ -1,6 +1,9 @@
 # episode 9
 # dealing with CRSs
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
 rm(list=ls())
 current_episode <- 9
 

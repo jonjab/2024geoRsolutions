@@ -1,5 +1,8 @@
 # ep 1 of vector / raster geospatial R
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
 library(terra)
 library(ggplot2)
 library(dplyr)

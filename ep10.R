@@ -1,6 +1,9 @@
 # episode 10
 # from csv to vector
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
 rm(list=ls())
 current_episode <- 10
 
