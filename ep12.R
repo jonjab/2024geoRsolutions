@@ -191,6 +191,21 @@ RGB_133 <- RGB_133/255
 
 plotRGB(RGB_133, r=1, g=2, b=3, stretch="lin")    
 
+str(yr_11_daily_avg)
+
+# another way?
+# how can I label the days?
+#   geom_text(aes(label= yr_11_daily_avg$jd))
+# didn't work.
+
+ggplot() +
+  geom_point(data = yr_11_daily_avg, aes(jd, prec)) +
+  ggtitle("Precipitation days",
+          subtitle = "NEON Harvard Forest Field Site") +
+  xlab("Julian Day 2011") +
+  ylab("mm rain or snow")
+
+
 
 
 
