@@ -19,7 +19,6 @@ current_episode <- 12
 
 library(terra)
 library(ggplot2)
-
 # this might be the first time we are using tidyr
 library(tidyr)
 library(scales)
@@ -27,7 +26,8 @@ library(dplyr)
 # install.packages("tidyr","scales") if not installed 
 
 
-# RGB data
+
+
 # Getting Started
 # set a path for the folder where the individual tiffs are:
 NDVI_HARV_path <- "data/NEON-DS-Landsat-NDVI/HARV/2011/NDVI"
@@ -90,11 +90,6 @@ ggplot() +
   geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
   facet_wrap(~ variable)
 
-# help says facet_grid is another option, but it's ugly:
-ggplot() +
-  geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
-  facet_grid(~ variable)
-
 
 
 #Scale Factors
@@ -140,10 +135,10 @@ har_met_daily <-
 str(har_met_daily)
 colnames(har_met_daily)
 
-#format the text dates to date-dates to YYYY-MM-DD
+# format the text dates to date-dates to YYYY-MM-DD
 har_met_daily$date <- as.Date(har_met_daily$date, format = "%Y-%m-%d")
 
-#to only view 2011 (or any specific year)
+# to only view 2011 (or any specific year) use filter
 yr_11_daily_avg <- har_met_daily %>%
   filter(between(date, as.Date('2011-01-01'), as.Date('2011-12-31')))
 
@@ -154,6 +149,7 @@ ggplot() +
           subtitle = "NEON Harvard Forest Field Site") +
   xlab("Julian Day 2011") +
   ylab("Mean Air Temperature (C)")
+
 
 
 # What other ways could we investigate the outlyers?
@@ -200,6 +196,12 @@ plotRGB(RGB_133, r=1, g=2, b=3, stretch="lin")
 
 # Challenge: 
 # Examine RGB Raster Files 
+
+
+# RGB data
+# aka ?????????
+
+
 
 # plot RGB images for Julian Days 277 and 293
 # compare with Julian Days 133 and 197 
