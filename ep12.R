@@ -85,6 +85,8 @@ dim(NDVI_HARV_stack)
 NDVI_HARV_stack_df <- as.data.frame(NDVI_HARV_stack, xy = TRUE) %>%
   pivot_longer(-(x:y), names_to = "variable", values_to = "value")
 
+str(NDVI_HARV_stack_df)
+
 # facet_wrap = make 1 little graph per variable 
 ggplot() +
   geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
@@ -134,6 +136,8 @@ har_met_daily <-
 # jd's are integers. yyy.mm.dd is text.
 str(har_met_daily)
 colnames(har_met_daily)
+
+str(har_met_daily$date)
 
 # format the text dates to date-dates to YYYY-MM-DD
 har_met_daily$date <- as.Date(har_met_daily$date, format = "%Y-%m-%d")
@@ -193,15 +197,27 @@ plotRGB(RGB_133, r=1, g=2, b=3, stretch="lin")
 
 str(yr_11_daily_avg)
 
+
+RGB_277 <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif")
+names(RGB_277) <- paste0("X", names(RGB_277))
+RGB_277 <- RGB_277/255
+
+str(RGB_277)
+nlyr(RGB_277)
+plotRGB(RGB_277, r=3, g=2, b=1, stretch="lin") 
+
+
 # another way?
 # how can I label the days?
 #   geom_text(aes(label= yr_11_daily_avg$jd))
 # didn't work.
+str(yr_11_daily_avg$jd)
 
 ggplot() +
   geom_point(data = yr_11_daily_avg, aes(jd, prec)) +
   ggtitle("Precipitation days",
           subtitle = "NEON Harvard Forest Field Site") +
+  geom_text(data = yr_11_daily_avg, aes(x=jd, y=prec, label=jd)) +
   xlab("Julian Day 2011") +
   ylab("mm rain or snow")
 

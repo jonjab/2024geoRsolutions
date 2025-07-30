@@ -28,6 +28,7 @@ all_NDVI_HARV <- list.files(NDVI_HARV_path,
                             pattern = ".tif$")
 
 NDVI_HARV_stack <- rast(all_NDVI_HARV)
+
 NDVI_HARV_stack_df <- as.data.frame(NDVI_HARV_stack, xy = TRUE) %>%
   pivot_longer(-(x:y), names_to = "variable", values_to = "value")
 
@@ -75,7 +76,7 @@ ggplot() +
 #   hint: part of the theme() function
 
 # the challenge says to use help / internet search to figure out
-# this challense
+# this challenge
 
 
 ggplot() +
@@ -114,6 +115,7 @@ ggplot() +
 
 
 # we change the 9 colors into 20
+# Jon doesn't know if 9 vs 20 colors does anything
 ggplot() +
   geom_raster(data = NDVI_HARV_stack_df , aes(x = x, y = y, fill = value)) +
   facet_wrap(~variable) +
@@ -121,7 +123,7 @@ ggplot() +
   theme_void() + 
   theme(plot.title = element_text(hjust = 0.5, face = "bold"), 
         plot.subtitle = element_text(hjust = 0.5)) + 
-  scale_fill_gradientn(name = "NDVI", colours = green_colors(20))
+  scale_fill_gradientn(name = "NDVI", colours = green_colors(3))
 
 # I don't see any difference. Do you?
 
@@ -185,6 +187,8 @@ ggplot() +
 # label each tile 'julian day' with the julian day value following (use sub or gsub())
 # change the color ramp to a divergent brown to green color ramp
 # 'DOY' might be a better label for Julian. 'Ordinal Day'
+
+# set names needs some explanation
 
 raster_names  <- gsub("Day","Julian Day", raster_names)
 raster_names

@@ -28,6 +28,7 @@ CHM_HARV_df <- as.data.frame(CHM_HARV, xy=TRUE)
 # Plot Locations
 plot_locations_sp_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp")
 
+str(plot_locations_sp_HARV)
 # extract doesn't make a new dataframe. 
 
 
@@ -43,6 +44,7 @@ str(point_HARV)
 # don't forget how to specify which libraries get used: terra:extract()
 # Jon' didn't get that error. is that because tidyr isn't loaded?
 
+library(tidyr)
 # if this throws an error:
 mean_tree_height_tower <- extract(x = CHM_HARV,
                                    y = st_buffer(point_HARV, dist = 20),
