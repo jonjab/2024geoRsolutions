@@ -1,6 +1,9 @@
 # ep 6
 # Open and plot a vector
 
+library(pacman)
+pacman::p_unload(pacman::p_loaded(), character.only = TRUE)
+
 rm(list=ls())
 current_episode <- 6
 
